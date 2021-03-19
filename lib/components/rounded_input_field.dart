@@ -51,3 +51,19 @@ class TextInputField extends StatelessWidget {
     );
   }
 }
+class ContainerStyle extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.08,
+      width: size.width * 0.8,
+      decoration: BoxDecoration(
+        color: Colors.grey[500].withOpacity(0.5),
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+}
+
