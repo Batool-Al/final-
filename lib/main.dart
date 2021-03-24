@@ -8,6 +8,7 @@ import 'package:flutter_login_purple/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.indigo[50],
       ),
-      home: streamBuilder(),
+      home: StartScreen(),
     );
 
 

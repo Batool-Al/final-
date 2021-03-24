@@ -223,6 +223,7 @@ class _BodyState extends State<Body> {
                     _password = value;
                     print("password is: $_password");
                   },
+                  obscureText: true,
                   validator: (_password) => _password.length <6 ? 'Please Enter Valid Password' : null,
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -242,7 +243,7 @@ class _BodyState extends State<Body> {
                      borderRadius: BorderRadius.circular(29),
                      child: RaisedButton(
                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                       color: Colors.lightBlue,
+                       color: Colors.indigo[400],
                        onPressed: () {
                          if (_formKey.currentState.validate()) {
                            dbRef.child("Users").push().child(userEmail).set({
@@ -251,7 +252,6 @@ class _BodyState extends State<Body> {
                              "First Name": firstNameController.text,
                              "Second Name": secondNameController.text,
                              "Email": emailController.text,
-                             "password": passwordController.text,
                              "ID": idController.text,
                            }).then((_) {
                              Scaffold.of(context).showSnackBar(
