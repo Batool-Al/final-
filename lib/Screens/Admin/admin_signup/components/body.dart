@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_purple/Screens/Signup/components/background.dart';
-import 'package:flutter_login_purple/Screens/Signup/components/or_divider.dart';
-import 'package:flutter_login_purple/Screens/admin_login/login_screen2.dart';
+import 'package:flutter_login_purple/Screens/Student/Signup/components/background.dart';
+import 'package:flutter_login_purple/Screens/Student/Signup/components/or_divider.dart';
+import 'package:flutter_login_purple/Screens/Admin/admin_login/login_screen2.dart';
 import 'package:flutter_login_purple/components/already_have_an_account_acheck.dart';
 import 'package:flutter_login_purple/components/rounded_button.dart';
 import 'package:flutter_login_purple/components/rounded_small_input_field.dart';

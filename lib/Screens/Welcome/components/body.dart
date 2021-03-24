@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_purple/Screens/Login/login_screen.dart';
+import 'package:flutter_login_purple/Screens/Student/Login/login_screen.dart';
 import 'package:flutter_login_purple/Screens/Welcome/components/background.dart';
-import 'package:flutter_login_purple/Screens/admin_login/login_screen2.dart';
+import 'package:flutter_login_purple/Screens/Admin/admin_login/login_screen2.dart';
 import 'package:flutter_login_purple/components/rounded_button.dart';
 import 'package:flutter_login_purple/constants.dart';
 import 'package:lottie/lottie.dart';

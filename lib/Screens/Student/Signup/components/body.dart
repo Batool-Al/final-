@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_purple/Screens/Signup/components/or_divider.dart';
+import 'package:flutter_login_purple/Screens/Student/Home/home_screen.dart';
+import 'package:flutter_login_purple/Screens/Student/Signup/components/or_divider.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_login_purple/Screens/admin_login/components/background.dart';
+import 'package:flutter_login_purple/Screens/Student/Signup/components/background.dart';
 
 
 class Body extends StatefulWidget {
@@ -23,7 +24,9 @@ class _BodyState extends State<Body> {
 
   Future<void> _createUser() async{
     try{
-      UserCredential _userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      UserCredential _userCredential = await FirebaseAuth
+          .instance
+          .createUserWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch(e){
       print("error $e");
     }catch(e){
@@ -52,9 +55,6 @@ class _BodyState extends State<Body> {
     firstNameController.clear();
     secondNameController.clear();
   }
-
-  final referenceData = FirebaseDatabase.instance;
-
 
   @override
   Widget build(BuildContext context) {
@@ -215,15 +215,15 @@ class _BodyState extends State<Body> {
                   color: Colors.grey[500].withOpacity(0.5),
                   borderRadius: BorderRadius.circular(16),
                 ),
-
                 child: TextFormField(
                   controller: passwordController,
                   autocorrect: true,
                   keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value){
+                  onChanged: (value) {
                     _password = value;
                     print("password is: $_password");
                   },
+                  validator: (_password) => _password.length <6 ? 'Please Enter Valid Password' : null,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock_outline, color: Colors.white, size: 20,) ,
@@ -231,7 +231,6 @@ class _BodyState extends State<Body> {
                       labelStyle: TextStyle(color: Colors.white)
                   ),
                   // The validator receives the text that the user has entered.
-                  validator: (value) => value.isEmpty ? 'Please Enter Valid Password' : null,
                 ),
               ),
               SizedBox(height: size.height * 0.08,),
@@ -245,15 +244,35 @@ class _BodyState extends State<Body> {
                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                        color: Colors.lightBlue,
                        onPressed: () {
-                         dbRef.child("Users").push().child(userEmail).set({
-                           "First Name": firstNameController.text,
-                           "Second Name": secondNameController.text,
-                           "Email": emailController.text,
-                           "password": passwordController.text,
-                           "ID": idController.text,
-                         }).asStream();
-                         _createUser();
-                         clearTextInput();
+                         if (_formKey.currentState.validate()) {
+                           dbRef.child("Users").push().child(userEmail).set({
+                             "email": emailController.text,
+                             "password": passwordController.text,
+                             "First Name": firstNameController.text,
+                             "Second Name": secondNameController.text,
+                             "Email": emailController.text,
+                             "password": passwordController.text,
+                             "ID": idController.text,
+                           }).then((_) {
+                             Scaffold.of(context).showSnackBar(
+                                 SnackBar(content: Text('Successfully Added')));
+                             emailController.clear();
+                             passwordController.clear();
+                           }).catchError((onError) {
+                             Scaffold.of(context)
+                                 .showSnackBar(SnackBar(content: Text(onError)));
+                           }).asStream();
+                           _createUser();
+                           clearTextInput();
+                           Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                               builder: (context) {
+                                 return studentHomePage();
+                               },
+                             ),
+                           );
+                         }
                        },
                        child: Text(
                         "SIGNUP",
