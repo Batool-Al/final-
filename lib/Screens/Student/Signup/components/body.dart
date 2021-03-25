@@ -37,7 +37,7 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
 
   final List<String> majors = ['IT', 'Business', 'English'];
-  String dropdownValue = 'IT';
+  String dropdownValue = 'Select Your Major';
 
   // Controllers
   final emailController = TextEditingController();
@@ -54,6 +54,7 @@ class _BodyState extends State<Body> {
     idController.clear();
     firstNameController.clear();
     secondNameController.clear();
+    majorController.clear();
   }
 
   @override
@@ -90,7 +91,7 @@ class _BodyState extends State<Body> {
                           border: InputBorder.none,
                           prefixIcon: Icon(Icons.perm_identity, color: Colors.white, size: 20,),
                           labelText: "First Name",
-                          labelStyle: TextStyle(color: Colors.white, fontSize: 13)
+                          labelStyle: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold")
                       ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
@@ -117,7 +118,7 @@ class _BodyState extends State<Body> {
                           border: InputBorder.none,
                           prefixIcon: Icon(Icons.perm_identity, color: Colors.white, size: 20,),
                           labelText: "Second Name",
-                          labelStyle: TextStyle(color: Colors.white, fontSize: 13)
+                          labelStyle: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold")
                       ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
@@ -147,7 +148,7 @@ class _BodyState extends State<Body> {
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.perm_identity, color: Colors.white, size: 20,),
                       labelText: "User ID",
-                      labelStyle: TextStyle(color: Colors.white)
+                      labelStyle: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold")
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) => value.isEmpty ? 'Enter Valid ID' : null,
@@ -157,26 +158,35 @@ class _BodyState extends State<Body> {
               /// Major
               Container(
                 height: size.height * 0.08,
-                width: size.width * 0.4,
+                width: size.width * 0.8,
                 decoration: BoxDecoration(
                   color: Colors.grey[500].withOpacity(0.5),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: DropdownButtonFormField(
-                 icon: Icon(Icons.arrow_downward) ,
-                  items: ['IT', 'Business', 'English'].map((major) {
+                  dropdownColor: Colors.indigo[100],
+                 icon: Container(
+                     padding: EdgeInsets.only(right: 10, ),
+                     child: Icon(Icons.arrow_downward, color: Colors.white,)),
+                  decoration: InputDecoration(
+                    hintText: "Select Your Major",
+                    hintStyle: TextStyle(color: Colors.white, ),
+                    border: InputBorder.none,
+                  ),
+                  items: majors.map((major) {
                     return DropdownMenuItem(
                       value: major,
-                      child: Text('$major',),
+                      child: Container(
+                        padding: EdgeInsets.only(left: 15),
+                          child:
+                          Text('$major', style: TextStyle(color: Colors.white),)),
                     );
                   }).toList(),
                   onChanged: (String stored){
-                   setState(() {
-                     this._currentStateSelected = stored;
+                   setState((){
+                     dropdownValue = stored;
                    });
                   },
-                  value: _currentStateSelected,
-
                 ),
               ),
               SizedBox(height: 6,),
@@ -200,7 +210,7 @@ class _BodyState extends State<Body> {
                       border: InputBorder.none,
                     prefixIcon: Icon(Icons.email_outlined, color: Colors.white, size: 20,),
                     labelText: "Enter Email",
-                    labelStyle: TextStyle(color: Colors.white)
+                    labelStyle: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold")
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) => value.isEmpty ? 'Enter Email' : null,
@@ -229,7 +239,7 @@ class _BodyState extends State<Body> {
                       border: InputBorder.none,
                     prefixIcon: Icon(Icons.lock_outline, color: Colors.white, size: 20,) ,
                     labelText: "Enter Password",
-                      labelStyle: TextStyle(color: Colors.white)
+                      labelStyle: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold")
                   ),
                   // The validator receives the text that the user has entered.
                 ),
@@ -247,15 +257,16 @@ class _BodyState extends State<Body> {
                        onPressed: () {
                          if (_formKey.currentState.validate()) {
                            dbRef.child("Users").push().child(userEmail).set({
-                             "email": emailController.text,
-                             "password": passwordController.text,
                              "First Name": firstNameController.text,
                              "Second Name": secondNameController.text,
-                             "Email": emailController.text,
                              "ID": idController.text,
+                             "Major": dropdownValue,
+                             "Email": emailController.text,
+                             "Password": passwordController.text,
+
                            }).then((_) {
                              Scaffold.of(context).showSnackBar(
-                                 SnackBar(content: Text('Successfully Added')));
+                                 SnackBar(content: Text('Successfully Added', style: TextStyle(fontSize: 13, color: Colors.white, height: 1.5, fontFamily: "NotoSerif-Bold"),)));
                              emailController.clear();
                              passwordController.clear();
                            }).catchError((onError) {
@@ -276,7 +287,7 @@ class _BodyState extends State<Body> {
                        },
                        child: Text(
                         "SIGNUP",
-                       style: TextStyle(color: Colors.white),
+                       style: TextStyle(color: Colors.white,fontFamily: "NotoSerif-Bold"),
                 ),
               ),
             ),
